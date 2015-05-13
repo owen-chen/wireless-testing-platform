@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from TornadoLib.Entrance import Entrance
 from AutoTestLib.DevicesManage import DevicesManage
+from AutoTestLib.Entrance import Entrance
 
 
 def run():
