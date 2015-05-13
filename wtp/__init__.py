@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from AutoTestLib.DevicesManage import DevicesManage
-from AutoTestLib.Entrance import Entrance
+from Entrance import Entrance
 
 
 def run():

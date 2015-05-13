@@ -9,11 +9,11 @@ Func: 测试入口
 
 import sys
 
-from ProcessLock import Lock
-from Config import Config
-from DevicesManage import DevicesManage
 from CaseManage import CasesManage
 from CommonLib import ciWrite
+from Config import Config
+from DevicesManage import DevicesManage
+from ProcessLock import Lock
 from SSHServer import SSHServer
 
 

@@ -4,11 +4,12 @@
 __author__ = 'sqxu'
 __date__ = '2015-03-10 09:07'
 
-import tornado.web
-import tornado.websocket
-import tornado.ioloop
 import random
 import time
+
+import tornado.ioloop
+import tornado.web
+import tornado.websocket
 
 
 class ImeTestHandler(tornado.web.RequestHandler):

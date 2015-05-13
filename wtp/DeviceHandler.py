@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import tornado.web
+
+from DevicesManage import DevicesManage
+from JsonText import JsonText
+from XmlText import XmlTest
+
 
 __author__ = 'sqxu'
 __date__ = '2015-03-05 17:02'
@@ -8,11 +14,7 @@ __date__ = '2015-03-05 17:02'
 该模块中获取手机状态信息
 """
 
-import tornado.web
 
-from JsonText import JsonText
-from XmlText import XmlTest
-from AutoTestLib.DevicesManage import DevicesManage
 
 
 class DeviceHandler(tornado.web.RequestHandler):
