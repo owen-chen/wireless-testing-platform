@@ -22,7 +22,7 @@ from RecinboxTest import RecinboxTestHandler
 
 class Entrance:
     def __init__(self):
-        define('port', default=8000, help='run on the given port', type=int)  # 处理命令行中的参数
+        define('port', default=9000, help='run on the given port', type=int)  # 处理命令行中的参数
 
     def run(self):
         tornado.options.parse_command_line()  # 使用options来解析命令行
