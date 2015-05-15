@@ -3,9 +3,9 @@
 from Entrance import Entrance
 
 
-def run():
+def main():
     Entrance().run()
     
 if __name__ == '__main__':
-    run()
+    main()
     
