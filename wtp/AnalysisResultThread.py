@@ -1,21 +1,19 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# AnalysisResultThread.py
 '''
-Created on 2014年12月26日
-Func: 结果分析线程
-@author: sqxu
+    结果展示线程，该线程将工作线程中产生的结果队列的信息抓取出来并将其展示。该线程随主线程的结束而结束
+    @since: 2014-12-26
+    @author: sqxu
+    @author: chenchen9
 '''
+
 import Queue
 from threading import Thread
+
 from CommonLib import ciWrite, getCaseName
 
 
 class AnalysisResultThread(Thread):
-    """
-            结果展示线程，该线程将工作线程中产生的结果队列的信息抓取出来并将其展示
-            该线程随主线程的结束而结束
-    """
+    ''' constructor '''
     def __init__(self, rslt_queue, rslt_path, no_dvc_ent, rslt_cond, getRsltFunc):
         """
         @param _result_queue: 保存结果的队列
@@ -54,7 +52,7 @@ class AnalysisResultThread(Thread):
         ciWrite(case_name, '%s' % result_dict['result'])
         ciWrite(case_name, 'EXECUTE_ELAPSED_TIME##%.2f' % exec_time)
         if result_dict['result'] != 'success':
-            ciWrite(case_name, 'DEVICE##%s，%s，%s，%s' % ( devc_info.product, devc_info.resolution, \
+            ciWrite(case_name, 'DEVICE##%s，%s，%s，%s' % (devc_info.product, devc_info.resolution, \
                                                             devc_info.edition, devc_info.serial))
             if len(result_dict['msg']) > 0:
                 for line in result_dict['msg']:

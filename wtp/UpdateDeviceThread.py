@@ -1,14 +1,13 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#UpdateDeviceThread.py
 '''
 Created on 2014年12月26日
 Func: 手机信息更新线程
 @author: sqxu
 '''
 from threading import Thread
+
 from CommonLib import ciWrite
-from DevicesManage import DevicesManage
+from DeviceManager import DeviceManager
 
 
 class UpdateDeviceThread(Thread):
@@ -28,7 +27,7 @@ class UpdateDeviceThread(Thread):
         self.setName('UpdateDeviceThread')
         self._devc_list = devc_list
         self._dvc_event = no_dvc_ent
-        self._devices_mgr = DevicesManage()
+        self._devices_mgr = DeviceManager()
     
     def run(self):
         '''
@@ -37,7 +36,7 @@ class UpdateDeviceThread(Thread):
         err_tag = 0
         while True:
             try:
-                devices_list, unable_list = self._devices_mgr.getDevicesList()
+                devices_list, unable_list = self._devices_mgr.findDeviceList()
                 # 如果发现没有手机连接，退出程序
                 if len(devices_list) == 0:
                     err_tag = err_tag + 1

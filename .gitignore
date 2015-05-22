@@ -1,1 +1,6 @@
 /.settings/
+/.project
+/.pydevproject
+/build/
+/dist/
+/wtp.egg-info/

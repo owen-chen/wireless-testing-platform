@@ -8,13 +8,14 @@ Created on 2014年12月15日
 import os
 import sys
 import time
+
 from CommonLib import callCommand, ciWrite
 from ThreadPoolManage import ThreadPoolManage
 
 
-class CasesManage():
+class CaseManager():
     '''
-            根据测试用例列表和手机信息列表进行测试，以达到最优任务调度
+        根据测试用例列表和手机信息列表进行测试，以达到最优任务调度
     '''
     def __init__(self, cfg, devc_list, runTestCase, prepareWorkForDevice, prepareWorkForCase, getResult):
         '''

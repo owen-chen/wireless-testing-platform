@@ -1,12 +1,10 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''
+Created on May 15, 2015
 
-__author__ = 'sqxu'
-__date__ = '2015-03-05 16:57'
-
-"""
-启动web服务入口
-"""
+@author: chenchen9
+@author: sqxu
+'''
 
 import tornado.httpserver
 import tornado.ioloop
@@ -14,19 +12,21 @@ from tornado.options import define, options
 import tornado.options
 import tornado.web
 
-from DeviceHandler import DeviceHandler
+from DeviceInfoController import DeviceInfoController
 from ImeTest import ImeTestHandler
 from LingxiTest import LingxiTestHandler
 from RecinboxTest import RecinboxTestHandler
+from TriggerHandler import TriggerHandler
 
 
-class Entrance:
+class TornadoProcessor:
     def __init__(self):
-        define('port', default=9000, help='run on the given port', type=int)  # 处理命令行中的参数
+        define('port', 9000, None, int)
 
     def run(self):
-        tornado.options.parse_command_line()  # 使用options来解析命令行
-        application = tornado.web.Application(handlers=[(r'/devices', DeviceHandler),
+        tornado.options.parse_command_line()
+        application = tornado.web.Application(handlers=[(r'/devices', DeviceInfoController),
+                                                        (r'/trigger', TriggerHandler),
                                                         (r'/lingxi', LingxiTestHandler),
                                                         (r'/ime', ImeTestHandler),
                                                         (r'/recinbox', RecinboxTestHandler)

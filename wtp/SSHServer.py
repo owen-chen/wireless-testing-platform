@@ -8,6 +8,7 @@ __date__ = '2015-03-19 16:03'
 """
 
 import os
+
 import paramiko
 
 
@@ -45,5 +46,5 @@ class SSHServer():
 if __name__ == '__main__':
     import time
     s = time.time()
-    SFTPServer('172.16.95.14', 22, 'cis', 'cis')
+    SSHServer('172.16.95.14', 22, 'cis', 'cis')
     print time.time() - s

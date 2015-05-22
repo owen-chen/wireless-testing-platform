@@ -9,12 +9,11 @@ Func: 测试入口
 
 import sys
 
-from CaseManage import CasesManage
+import CaseManager
 from CommonLib import ciWrite
 from Config import Config
-from DevicesManage import DevicesManage
+from DeviceManager import DeviceManager
 from ProcessLock import Lock
-from SSHServer import SSHServer
 
 
 def execScript(cfg_file, runTestCase, prepareWorkForDevice, prepareWorkForCase, getResult, apk_path=None):
@@ -28,8 +27,8 @@ def execScript(cfg_file, runTestCase, prepareWorkForDevice, prepareWorkForCase, 
     try:
         lock.acquire()
         # 判断是否链接有手机,没有可用手机,退出程序
-        devc_mgr = DevicesManage()
-        devices_list, unable_list = devc_mgr.getDevicesList()
+        devc_mgr = DeviceManager()
+        devices_list, unable_list = devc_mgr.findDeviceList()
         devc_mgr.printDevicesInfo(devices_list, unable_list)
         if (len(devices_list) == 0):
             ciWrite('ERROR', 'can\'t find test instance devices')
@@ -42,6 +41,6 @@ def execScript(cfg_file, runTestCase, prepareWorkForDevice, prepareWorkForCase, 
         # SSHServer('172.16.95.14', 22, 'cis', 'cis', '/home/cis/auto-test/ime', 'd://ime ')
         
         # 执行测试
-        CasesManage(cfg, devices_list, runTestCase, prepareWorkForDevice, prepareWorkForCase, getResult)
+        CaseManager(cfg, devices_list, runTestCase, prepareWorkForDevice, prepareWorkForCase, getResult)
     finally:
         lock.release()

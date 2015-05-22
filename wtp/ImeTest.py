@@ -9,7 +9,6 @@ import time
 
 import tornado.ioloop
 import tornado.web
-import tornado.websocket
 
 
 class ImeTestHandler(tornado.web.RequestHandler):
