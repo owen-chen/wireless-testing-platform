@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-#CaseManage.py
+# CaseManage.py
 '''
 Created on 2014年12月15日
 @author: sqxu
@@ -10,10 +10,10 @@ import sys
 import time
 
 from CommonLib import callCommand, ciWrite
-from ThreadPoolManage import ThreadPoolManage
+from ThreadPoolManager import ThreadPoolManager
 
 
-class CaseManager():
+class TestCaseManager2():
     '''
         根据测试用例列表和手机信息列表进行测试，以达到最优任务调度
     '''
@@ -39,9 +39,9 @@ class CaseManager():
         self._case_list = self._getCasesList(cfg.test_case_file)
         self._initSignedApk()
         self._result_path = self._getResultFilePath()
-        self._thread_pool = ThreadPoolManage(self._thread_numb, self._devices_list, \
+        self._thread_pool = ThreadPoolManager(self._thread_numb, self._devices_list, \
                                              self._time_out, self._result_path, \
-                                             self._apk_path, self._uni_apk_path,\
+                                             self._apk_path, self._uni_apk_path, \
                                              self._install_apk, getResult, \
                                              runTestCase, prepareWorkForDevice, \
                                              prepareWorkForCase)
@@ -54,18 +54,18 @@ class CaseManager():
                         并判断是否成功生成签名apk
         '''
         if not os.path.isfile(self._apk_path):
-            ciWrite('ERROR', 'can\'t find %s file'%self._apk_path)
+            ciWrite('ERROR', 'can\'t find %s file' % self._apk_path)
             sys.exit()
         
         #-------------判断是否需要签名
         if self._apk_signed:
             if not os.path.isfile(self._debug_store):
-                ciWrite('ERROR', 'can\'t find %s file'%self._debug_store)
+                ciWrite('ERROR', 'can\'t find %s file' % self._debug_store)
                 sys.exit()
                 
             apk_path_signed = self._apk_path + '_signed.apk'
             callCommand('jarsigner  -digestalg SHA1 -sigalg MD5withRSA -keystore %s -storepass android -keypass android -signedjar %s %s androiddebugkey'\
-                        %(self._debug_store, apk_path_signed, self._apk_path))
+                        % (self._debug_store, apk_path_signed, self._apk_path))
         
             if not os.path.isfile(apk_path_signed):
                 ciWrite('ERROR', 'signed apk not exist')
@@ -77,11 +77,11 @@ class CaseManager():
         '''
                         根据当前时间生成结果目录
         '''
-        local_time = time.strftime('%Y-%m-%d-%H-%M',time.localtime())
+        local_time = time.strftime('%Y-%m-%d-%H-%M', time.localtime())
         result_path = 'result_' + local_time
         #------------目录已经存在时，路径中加入秒，重新建立目录
         if os.path.isdir(result_path):
-            local_time = time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime())
+            local_time = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())
             result_path = 'result_' + local_time
         
         return result_path

@@ -49,6 +49,21 @@ class DeviceUtils:
     @staticmethod
     def pushFileToTargetPath(serial, source, target):
         callCommand('adb -s %s push %s %s' % (serial, source, target))
+        
+    """ 创建文件到指定手机上的目标路径下 """
+    @staticmethod
+    def lockDevice(serial):
+        callCommand('adb -s %s shell touch /sdcard/processlock.pid' % (serial))
+
+    """ 在指定手机上的目标路径下删除文件 """
+    @staticmethod
+    def unlockDevice(serial):
+        callCommand('adb -s %s shell rm /sdcard/processlock.pid' % (serial))
+
+    """ 判断指定手机上的目标路径的指定文件是否存在 """
+    @staticmethod
+    def isDeviceLocked(serial):
+        return callCommand('adb -s %s shell ls /sdcard/ | grep processlock.pid' % (serial))
 
     """ 将本地文件夹传入手机中对应的文件夹，且按照本地文件夹的结构传入新文件夹 """
     @staticmethod

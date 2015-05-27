@@ -1,10 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf8 -*-
-#Config.py
 """
 Created on 2014/12/5
-文件处理类
+配置文件读取类
 @author: sqxu
+@author: chenchen9
 """
 import os
 import sys

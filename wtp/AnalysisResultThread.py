@@ -14,7 +14,7 @@ from CommonLib import ciWrite, getCaseName
 
 class AnalysisResultThread(Thread):
     ''' constructor '''
-    def __init__(self, rslt_queue, rslt_path, no_dvc_ent, rslt_cond, getRsltFunc):
+    def __init__(self, rslt_queue, result_path, no_dvc_ent, rslt_cond, getRsltFunc):
         """
         @param _result_queue: 保存结果的队列
         @param _result_path: 保存结果的路径
@@ -24,7 +24,7 @@ class AnalysisResultThread(Thread):
         self.setDaemon(True)
         self.setName('AnalysisResultThread')
         self._result_queue = rslt_queue
-        self._result_path = rslt_path
+        self._result_path = result_path
         self._dvc_event = no_dvc_ent
         self._result_cond = rslt_cond
         self.getResultFunc = getRsltFunc

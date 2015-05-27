@@ -5,58 +5,98 @@ Created on 2014年12月18日
 @author: chenchen9
 """
 
+import json
+import random
+import thread
+from threading import Lock
+import time
+
 from CommonLib import callCommand, ciWrite
 from DeviceInfo import DeviceInfo
 from DeviceInfoList import DeviceInfoList
+from DeviceUtils import DeviceUtils
+from Singleton import singleton
 
 
+@singleton
 class DeviceManager():
-    """
-    对手机的整体管理，包括获取手机信息列表、打印手机信息等
-    """
-    def findDeviceList(self):
-        """
-        获取与测试服务器链接的手机信息，保存在列表中
-        手机信息包括serial，priduct和state等
-        state初始默认为1，即代表该机器可用，-1代表不可用
-        """
-        deviceInfoList = DeviceInfoList()
+    _deviceInfoList = None
+    _lock = Lock()
+    
+    ''' singleton device manager '''
+    def __init__(self):
+        if self._deviceInfoList == None:
+            self._deviceInfoList = DeviceInfoList()
+            self.refresh(True)
+            thread.start_new_thread(self._refreshPeriodly, ())
+            
+    def getDeviceInfoList(self):
+        return self._deviceInfoList
+    
+    def unshiftDevice(self):
+        try:
+            self._lock.acquire()
+        
+            available_device_len = len(self._deviceInfoList.available_device_list)
+            if available_device_len <= 0:
+                return None
+            
+            index = random.randint(0, available_device_len - 1)
+            deviceInfo = self._deviceInfoList.available_device_list.pop(index)
+            DeviceUtils.lockDevice(deviceInfo.serial)
+            
+            return deviceInfo
+        finally:
+            self._lock.release()
+#         
+    def resetDevice(self, deviceInfo):
+        try:
+            self._lock.acquire()
+            
+            DeviceUtils.unlockDevice(deviceInfo.serial)
+        finally:
+            self._lock.release()
+    
+    def refresh(self, isFirst=False):
+        tempAvailableDeviceList = []
+        tempUnavailableDeviceList = []
+        tempProcessingDeviceList = []
+        
+        try:
+            self._lock.acquire()
+            
+            adb_dvc = callCommand("adb devices")[1:]
+            for dvc_info in adb_dvc:
+                try:
+                    dvc_info = dvc_info.strip()
+                    if not dvc_info:
+                        continue
+                    
+                    serial = dvc_info.split()[0]
+                    if dvc_info.split()[1] == 'device':
+                        if isFirst:
+                            DeviceUtils.unlockDevice(serial)
+                        
+                        if DeviceUtils.isDeviceLocked(serial):
+                            tempProcessingDeviceList.append(DeviceInfo(serial))
+                        else:
+                            tempAvailableDeviceList.append(DeviceInfo(serial))
+                    else:
+                        tempUnavailableDeviceList.append(DeviceInfo(serial, False))
+                except Exception, e:
+                    print e
+            
+            self._deviceInfoList.available_device_list = tempAvailableDeviceList
+            self._deviceInfoList.unavailable_device_list = tempUnavailableDeviceList
+            self._deviceInfoList.processing_device_list = tempProcessingDeviceList
+        finally:
+            self._lock.release()
+            
+            
+    def _refreshPeriodly(self):
+        while True:
+            self.refresh()
+            time.sleep(1)
 
-        adb_dvc = callCommand("adb devices")[1:]
-        for dvc_info in adb_dvc:
-            try:
-                dvc_info = dvc_info.strip()
-                if not dvc_info:
-                    continue
-                
-                serial = dvc_info.split()[0]
-                if dvc_info.split()[1] == 'device':
-                    deviceInfoList.appendAvailableDevice(DeviceInfo(serial))
-                else:
-                    deviceInfoList.appendUnavailableDevice(DeviceInfo(serial, False))
-            except Exception, e:
-                print e
-                
-        return deviceInfoList
-
-    ''' XXX toString() '''
-    def printDevicesInfo(self, available_device_list, unavailable_device_list):
-        fmt = '%-20s%-20s%-20s%-20s%-20s%-20s%-20s'
-        ciWrite('DEVICE_STATUS', fmt % ('serial', 'product', 'device_state', 'resolution', 'edition', 'memory_state', 'sim_state'))
-
-        for devc in available_device_list:
-            ciWrite('DEVICE_STATUS', fmt % (devc.serial, devc.product, 'device', devc.resolution, devc.edition, \
-                                            (devc.memory_size + '/' + devc.memory_free), devc.sim_state))
-
-        for dvc in unavailable_device_list:
-            ciWrite('DEVICE_STATUS', fmt % (dvc[0], '', dvc[1], '', '', '', ''))
-
-    def pushDocumentToAllDevices(self, local_document, target_document):
-        pass
-
-
-# -------------------功能验证部分-----------------------
-if __name__ == '__main__':
-    import os
-    install = 'adb install C:\Users\sqxu\PycharmProjects\AutoTestLib\IME\apk\iFlyIME_v5.0.1740.apk'
-    print os.popen(install).readlines()
+    def printDeviceInfoListToConsole(self):
+        ciWrite('DEVICE_STATUS', json.dumps(self._deviceInfoList.toDict()))
