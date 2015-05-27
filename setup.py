@@ -6,9 +6,8 @@ from setuptools import setup, find_packages
 
 setup(
       name="wtp",
-        version="1.0.1",
+        version="1.1.0",
         packages=find_packages(),
-        package_data={'':['result.html']},
         zip_safe=False,
 
         description="wireless testing platform",
