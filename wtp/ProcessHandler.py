@@ -31,9 +31,9 @@ class ProcessHandler(tornado.web.RequestHandler):
             if exist:
                 break
             
-            if (tempPath.index('/') == -1 and tempPath.index('_') == -1) or not tempPath:
+            if (tempPath.find('/') == -1 and tempPath.find('_') == -1) or not tempPath:
                 raise Exception
-            if tempPath.index('_') != -1:
+            if tempPath.find('_') != -1:
                 tempPath = tempPath[:tempPath.rindex('_')]
             else:
                 tempPath = tempPath[:tempPath.rindex('/')]
