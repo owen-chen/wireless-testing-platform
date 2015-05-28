@@ -32,4 +32,4 @@ class DeviceInfoController(tornado.web.RequestHandler):
         else:
             raise Exception('unsupported argument: ' + api_type) 
         
-        self.write(devices_info)
+        self.render('index.html', result_text=devices_info)

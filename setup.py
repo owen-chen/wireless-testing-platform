@@ -7,7 +7,7 @@ setup(
       name="wtp",
         version="1.1.0",
         packages=find_packages(),
-        package_data={'':['config.xml']},
+        package_data={'':['config.xml','index.html']},
         zip_safe=False,
 
         description="wireless testing platform",
