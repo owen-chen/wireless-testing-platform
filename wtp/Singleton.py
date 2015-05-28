@@ -12,4 +12,4 @@ def singleton(self, *args, **kw):
         if self not in instances:  
             instances[self] = self(*args, **kw)  
         return instances[self]  
-    return _singleton  
+    return _singleton

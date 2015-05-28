@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding:utf-8 -*-
 
 from setuptools import setup, find_packages
@@ -8,6 +7,7 @@ setup(
       name="wtp",
         version="1.1.0",
         packages=find_packages(),
+        package_data={'':['config.xml']},
         zip_safe=False,
 
         description="wireless testing platform",

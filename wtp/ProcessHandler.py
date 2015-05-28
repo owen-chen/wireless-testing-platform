@@ -2,7 +2,7 @@
 '''
 Created on May 15, 2015
 
-@author: chenchen9
+@author: chenchen
 '''
 import os
 

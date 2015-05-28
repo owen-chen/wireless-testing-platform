@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+	<testcase>
+		<timeout>
+			<total>100000</total>
+			<single>100</single>		
+		</timeout>
+	</testcase>
+</root>

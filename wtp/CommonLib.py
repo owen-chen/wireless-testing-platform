@@ -1,20 +1,19 @@
 # -*- coding: utf8 -*-
-# CommondLib.py
 """
-Created on 2014年12月5日
-Func: 公共接口
-@author: sqxu
+Created on Dec 5, 2014
+
+@author: chenchen
 """
 import os
-import sys
 import subprocess
+import sys
 
 
-def ciWrite(tag, info = ''):
+def ciWrite(tag, info=''):
     '''
             显示关键信息
     '''
-    sys.stderr.write('##%s##%s\n'.decode('utf8').encode('gbk')%(tag, info))
+    sys.stderr.write('##%s##%s\n'.decode('utf8').encode('gbk') % (tag, info))
     sys.stderr.flush()
 
     
@@ -30,19 +29,3 @@ def callCommandBySubprocess(command):
             执行命令并返回该命令的输出，支持中文命令
     """
     return subprocess.check_output(command)
-
-
-def getCaseName(test_case):
-    """
-    根据测试用例解析用例名字
-    """
-    try:
-        split_list = test_case.split('#')[1]
-        return split_list.split()[0]
-    except:
-        return "DEFAULTTEST"
-
-
-# ----------------------功能验证-----------------------
-if __name__ == '__main__':
-    pass

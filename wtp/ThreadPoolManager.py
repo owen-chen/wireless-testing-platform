@@ -1,8 +1,8 @@
 # -*- coding: utf8 -*-
 '''
-Created on 2014年12月16日
-@author: sqxu
-@author: chenchen9
+Created on Dec 16, 2014
+
+@author: chenchen
 '''
 
 import threadpool
@@ -25,15 +25,5 @@ class ThreadPoolManager:
         @param _result_thread: 用于展示结果的线程
     ''' 
     def __init__(self):
-#         self._work_queue = Queue.Queue() 
-#         self._result_queue = Queue.Queue()
-#         self._failed_queue = Queue.Queue()
-#         self._time_out = 5 * 60 * 1000
-#         self._work_threads = []
-#         self._result_cond = threading.Condition()
-#         self._result_thread = AnalysisResultThread.AnalysisResultThread(self._result_queue, result_path, \
-#                                                                         self._dvc_event, self._result_cond, \
-#                                                                         getRsltFunc)
-#         self.createThreads(runTestCase, prepareWorkForDevice, prepareWorkForCase)
         self.threadNumber = len(DeviceManager().getDeviceInfoList().available_device_list) * 2
         self.threadPool = threadpool.ThreadPool(self.threadNumber)

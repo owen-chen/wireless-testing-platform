@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on 2014年12月18日
-@author: sqxu
-@author: chenchen9
+Created on Dec 18, 2014
+
+@author: chenchen
 """
 
 import json

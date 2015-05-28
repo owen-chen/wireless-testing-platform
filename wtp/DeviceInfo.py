@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on 2015年1月5日
-Func: 手机信息类，保存手机需要的所有信息，方便后期维护
+Created on Jan 5, 2015
 @author: sqxu
+@author: chenchen
 """
 from DeviceUtils import DeviceUtils
 

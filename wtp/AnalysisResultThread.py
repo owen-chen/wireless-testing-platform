@@ -9,7 +9,7 @@
 import Queue
 from threading import Thread
 
-from CommonLib import ciWrite, getCaseName
+from CommonLib import ciWrite
 
 
 class AnalysisResultThread(Thread):

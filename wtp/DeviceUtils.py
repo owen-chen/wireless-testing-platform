@@ -5,12 +5,13 @@ Created on May 21, 2015
 @author: chenchen
 '''
 import os
-import time
 
 from CommonLib import callCommand
 
 
 class DeviceUtils:
+    processlock = '/sdcard/processlock.pid'
+    
     """ 根据手机序列号获取手机产品型号 """
     @staticmethod
     def getProductBySerial(serial):
@@ -53,17 +54,18 @@ class DeviceUtils:
     """ 创建文件到指定手机上的目标路径下 """
     @staticmethod
     def lockDevice(serial):
-        callCommand('adb -s %s shell touch /sdcard/processlock.pid' % (serial))
+        callCommand('adb -s %s shell touch %s' % (serial, DeviceUtils.processlock))
 
     """ 在指定手机上的目标路径下删除文件 """
     @staticmethod
     def unlockDevice(serial):
-        callCommand('adb -s %s shell rm /sdcard/processlock.pid' % (serial))
+        callCommand('adb -s %s shell rm %s' % (serial, DeviceUtils.processlock))
 
     """ 判断指定手机上的目标路径的指定文件是否存在 """
     @staticmethod
     def isDeviceLocked(serial):
-        return callCommand('adb -s %s shell ls /sdcard/ | grep processlock.pid' % (serial))
+        processlock = DeviceUtils.processlock
+        return callCommand('adb -s %s shell ls %s | grep %s' % (serial, processlock[0:processlock.rindex('/') + 1], processlock[processlock.rindex('/') + 1:]))
 
     """ 将本地文件夹传入手机中对应的文件夹，且按照本地文件夹的结构传入新文件夹 """
     @staticmethod
@@ -75,22 +77,3 @@ class DeviceUtils:
                 DeviceUtils.pushFileToTargetPath(serial, local_file, target + '/' + sub_file)
             else:
                 DeviceUtils.pushFolderToDevice(serial, local_file, target + '/' + sub_file)
-
-    """ 安装apk，并且返回安装的相关结果 """
-    @staticmethod
-    def installApk(serial, apk_path, uni_apk_path):
-        is_success = False
-        rslt_info = {}
-        uninstall_command = 'adb -s %s uninstall_command %s' % (serial, uni_apk_path)
-        install_command = 'adb -s %s install_command %s' % (serial, apk_path)
-
-        uni_time = time.time()
-        if callCommand(uninstall_command)[-1].find('Success') >= 0:
-            rslt_info['uni_time'] = time.time() - uni_time
-
-        ins_time = time.time()
-        if callCommand(install_command)[-1].find('Success') >= 0:
-            rslt_info['ins_time'] = time.time() - ins_time
-            is_success = True
-
-        return is_success, rslt_info
