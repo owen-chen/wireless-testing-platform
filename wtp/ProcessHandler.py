@@ -8,6 +8,7 @@ import os
 
 import tornado.web
 
+from Configuration import Configuration
 from TestcaseManager import TestcaseManager
 from TestcaseReader import TestcaseReader
 
@@ -16,7 +17,7 @@ class ProcessHandler(tornado.web.RequestHandler):
     ''' 执行测试用例 '''
     def get(self):
         ''' 1. 确定交付包位置 '''
-        apkpath = "%s/%s" % ('/disk1/PackageServer', self.get_argument('apkpath'))
+        apkpath = "%s/%s" % (Configuration().dicts['testcase']['packageServer'], self.get_argument('apkpath'))
         exist = os.path.isfile(apkpath)
         if not exist:
             raise Exception
@@ -26,7 +27,7 @@ class ProcessHandler(tornado.web.RequestHandler):
         tempPath = projectname.replace("-", "/")
 
         while True:
-            testcasePath = "%s/%s/testcase.xml" % ('/disk1/CIS/shared', tempPath)
+            testcasePath = "%s/%s/testcase.xml" % (Configuration().dicts['testcase']['testcaseServer'], tempPath)
             exist = os.path.isfile(testcasePath)
             if exist:
                 break

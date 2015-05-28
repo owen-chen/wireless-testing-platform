@@ -28,7 +28,8 @@ class TornadoProcessor:
 
     def run(self):
         tornado.options.parse_command_line()
-        application = tornado.web.Application(handlers=[(r'/devices', DeviceInfoController),
+        application = tornado.web.Application(handlers=[(r'/', DeviceInfoController),
+                                                        (r'/devices', DeviceInfoController),
                                                         (r'/process', ProcessHandler)
                                                         ])
         http_server = tornado.httpserver.HTTPServer(application)

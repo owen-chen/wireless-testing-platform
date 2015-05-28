@@ -17,8 +17,8 @@ class DeviceInfoController(tornado.web.RequestHandler):
     def get(self):
         dicts = DeviceManager().getDeviceInfoList().toDict()
         
-        api_type = self.get_argument('api', 'json')
-        pretty = self.get_argument('pretty', 'false').lower() == 'true'
+        api_type = self.get_argument('api', 'xml')
+        pretty = self.get_argument('pretty', 'true').lower() == 'true'
         if api_type == 'json':
             if pretty:
                 devices_info = json.dumps(dicts, indent=4)

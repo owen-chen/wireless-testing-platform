@@ -5,5 +5,7 @@
 			<total>100000</total>
 			<single>100</single>		
 		</timeout>
+		<packageServer>/disk1/PackageServer</packageServer>
+		<testcaseServer>/disk1/CIS/shared</testcaseServer>
 	</testcase>
 </root>
