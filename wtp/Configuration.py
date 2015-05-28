@@ -19,7 +19,5 @@ class Configuration():
     '''
     def __init__(self):
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        print __location__
-        
         xml = open(os.path.join(__location__, 'config.xml')).read()
         self.dicts = lazyxml.loads(xml, strip=False)

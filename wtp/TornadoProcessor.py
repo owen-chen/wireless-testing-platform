@@ -24,7 +24,7 @@ class TornadoProcessor:
         DeviceManager()
         ThreadPoolManager()
 
-        define('port', 9000, None, int)
+        define('port', 80, None, int)
 
     def run(self):
         tornado.options.parse_command_line()
