@@ -4,6 +4,8 @@ Created on Dec 5, 2014
 
 @author: chenchen9
 """
+import os
+
 import lazyxml
 
 from Singleton import singleton
@@ -16,5 +18,8 @@ class Configuration():
         @param file_name: 配置文件路径
     '''
     def __init__(self):
-        xml = open("config.xml").read()
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        print __location__
+        
+        xml = open(os.path.join(__location__, 'config.xml')).read()
         self.dicts = lazyxml.loads(xml, strip=False)
