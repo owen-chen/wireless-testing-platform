@@ -11,7 +11,7 @@ import thread
 from threading import Lock
 import time
 
-from CommonLib import callCommand, ciWrite
+from CommonLib import callCommand, write
 from DeviceInfo import DeviceInfo
 from DeviceInfoList import DeviceInfoList
 from DeviceUtils import DeviceUtils
@@ -99,4 +99,4 @@ class DeviceManager():
             time.sleep(1)
 
     def printDeviceInfoListToConsole(self):
-        ciWrite('DEVICE_STATUS', json.dumps(self._deviceInfoList.toDict()))
+        write('DEVICE_STATUS', json.dumps(self._deviceInfoList.toDict()))
