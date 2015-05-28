@@ -15,10 +15,11 @@ class DeviceInfo():
     '''
     def __init__(self, serial, state=True):
         self.serial = serial
-        self.product = DeviceUtils.getProductBySerial(serial)
-        self.resolution = DeviceUtils.getResolutionBySerial(serial)
-        self.edition = DeviceUtils.getEditionBySerial(serial)
-        self.memory_size, self.memory_free = DeviceUtils.getMemoryParameterBySerial(serial)
-        self.sim_state = DeviceUtils.getSimStateBySerial(serial)
         self.state = state
         self.first_install = True
+        if state:
+            self.product = DeviceUtils.getProductBySerial(serial)
+            self.resolution = DeviceUtils.getResolutionBySerial(serial)
+            self.edition = DeviceUtils.getEditionBySerial(serial)
+            self.memory_size, self.memory_free = DeviceUtils.getMemoryParameterBySerial(serial)
+            self.sim_state = DeviceUtils.getSimStateBySerial(serial)
