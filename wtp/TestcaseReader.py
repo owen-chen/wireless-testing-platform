@@ -6,7 +6,6 @@ Created on May 27, 2015
 '''
 import lazyxml
 
-from Condition import Condition
 from Testcase import Testcase
 
 
@@ -41,10 +40,8 @@ class TestcaseReader:
         else:
             testcase.commands.extend(self.splitCommandLine(testcaseDict['commands']['command']))
             
-        print "<>", testcaseDict['condition']
-        if testcaseDict['condition']:
-            if testcaseDict['condition']['sim']:
-                testcase.condition.sim = True if testcaseDict['condition']['sim'].lower() != 'false' else False
+        if testcaseDict.has_key('condition') and testcaseDict['condition'].has_key('sim'):
+            testcase.condition.sim = True if testcaseDict['condition']['sim'].lower() != 'false' else False
 
         if type(testcaseDict['prepares']['prepare']) is list:
             for prepare in testcaseDict['prepares']['prepare']:
