@@ -41,6 +41,7 @@ class TestcaseReader:
         else:
             testcase.commands.extend(self.splitCommandLine(testcaseDict['commands']['command']))
             
+        print "<>", testcaseDict['condition']
         if testcaseDict['condition']:
             if testcaseDict['condition']['sim']:
                 testcase.condition.sim = True if testcaseDict['condition']['sim'].lower() != 'false' else False
