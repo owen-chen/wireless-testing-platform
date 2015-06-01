@@ -33,7 +33,7 @@ class DeviceManager():
     def getDeviceInfoList(self):
         return self._deviceInfoList
     
-    def unshiftDevice(self):
+    def shiftDevice(self, condition):
         try:
             self._lock.acquire()
         
@@ -41,8 +41,22 @@ class DeviceManager():
             if available_device_len <= 0:
                 return None
             
-            index = random.randint(0, available_device_len - 1)
-            deviceInfo = self._deviceInfoList.available_device_list.pop(index)
+            aimed_index = -1
+            if condition.sim:
+                ''' XXX loadbalance '''
+                for i in range(len(self._deviceInfoList.available_device_list)):
+                    available_device = self._deviceInfoList.available_device_list[i]
+                    
+                    if available_device.sim_state == condition.sim:
+                        aimed_index = i
+                        break
+            else:
+                aimed_index = random.randint(0, available_device_len - 1)
+                
+            if aimed_index == -1:
+                return None
+                
+            deviceInfo = self._deviceInfoList.available_device_list.pop(aimed_index)
             DeviceUtils.lockDevice(deviceInfo.serial)
             
             return deviceInfo

@@ -29,7 +29,7 @@ class TestcaseManager:
                 time.sleep(1)
                 continue
             
-            deviceInfo = DeviceManager().unshiftDevice()
+            deviceInfo = DeviceManager().shiftDevice()
             print deviceInfo
             if not deviceInfo:
                 time.sleep(1)
