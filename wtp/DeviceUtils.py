@@ -39,7 +39,7 @@ class DeviceUtils:
     @staticmethod
     def getSimStateBySerial(serial):
         service_state = callCommand('adb -s %s shell dumpsys telephony.registry | grep mServiceState' % serial)[0].strip().split()[0].split('=')[1]
-        return int(service_state) == 0;
+        return int(service_state) == 1;
     
     """ 将手机中的文件保存至电脑中 """
     @staticmethod
