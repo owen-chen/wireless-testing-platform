@@ -29,13 +29,14 @@ class TestcaseManager:
                 time.sleep(1)
                 continue
             
-            deviceInfo = DeviceManager().shiftDevice()
-            print deviceInfo
+            testcase = self.queue.get()
+            deviceInfo = DeviceManager().shiftDevice(testcase.condition)
             if not deviceInfo:
+                self.queue.put(testcase)
+                
                 time.sleep(1)
                 continue
             
-            testcase = self.queue.get()
             requests = makeRequests(self._runTestcase, [{'deviceInfo':deviceInfo, 'testcase':testcase}])
             [ThreadPoolManager().threadPool.putRequest(req) for req in requests]
             ThreadPoolManager().threadPool.wait()

@@ -12,6 +12,7 @@ from threading import Lock
 import time
 
 from CommonLib import callCommand, write
+from Condition import Condition
 from DeviceInfo import DeviceInfo
 from DeviceInfoList import DeviceInfoList
 from DeviceUtils import DeviceUtils
@@ -33,7 +34,7 @@ class DeviceManager():
     def getDeviceInfoList(self):
         return self._deviceInfoList
     
-    def shiftDevice(self, condition):
+    def shiftDevice(self, condition=Condition()):
         try:
             self._lock.acquire()
         
