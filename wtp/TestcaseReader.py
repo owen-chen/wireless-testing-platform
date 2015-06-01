@@ -41,8 +41,9 @@ class TestcaseReader:
         else:
             testcase.commands.extend(self.splitCommandLine(testcaseDict['commands']['command']))
             
-        if testcaseDict['condition'] and testcaseDict['condition']['sim']:
-            testcase.condition.sim = True if testcaseDict['condition']['sim'].lower() != 'false' else False
+        if testcaseDict['condition']:
+            if testcaseDict['condition']['sim']:
+                testcase.condition.sim = True if testcaseDict['condition']['sim'].lower() != 'false' else False
 
         if type(testcaseDict['prepares']['prepare']) is list:
             for prepare in testcaseDict['prepares']['prepare']:
