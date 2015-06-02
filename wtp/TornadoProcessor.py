@@ -5,6 +5,8 @@ Created on May 15, 2015
 @author: chenchen
 '''
 
+import os
+
 import tornado.httpserver
 import tornado.ioloop
 from tornado.options import define, options
@@ -14,7 +16,9 @@ import tornado.web
 from Configuration import Configuration
 from DeviceInfoController import DeviceInfoController
 from DeviceManager import DeviceManager
-from ProcessHandler import ProcessHandler
+from ProcessController import ProcessController
+from TestcaseResultController import TestcaseResultController
+from TestcaseResultHtmlController import TestcaseResultHtmlController
 from ThreadPoolManager import ThreadPoolManager
 
 
@@ -24,14 +28,20 @@ class TornadoProcessor:
         DeviceManager()
         ThreadPoolManager()
 
-        define('port', 80, None, int)
+        define('port', 9000, None, int)
 
     def run(self):
+        settings = {'static_path': os.path.join(os.path.dirname(__file__), '')}
+        
         tornado.options.parse_command_line()
-        application = tornado.web.Application(handlers=[(r'/', DeviceInfoController),
+        application = tornado.web.Application(handlers=[(r'/(favicon\.png)', tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
+                                                        (r'/(jquery-1\.10\.2\.min\.js)', tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
+                                                        (r'/', DeviceInfoController),
                                                         (r'/devices', DeviceInfoController),
-                                                        (r'/process', ProcessHandler)
-                                                        ])
+                                                        (r'/process', ProcessController),
+                                                        (r'/result', TestcaseResultController),
+                                                        (r'/resultHtml', TestcaseResultHtmlController)
+                                                        ], **settings)
         http_server = tornado.httpserver.HTTPServer(application)
         http_server.listen(options.port)
         tornado.ioloop.IOLoop.instance().start()

@@ -32,7 +32,18 @@ class TestcaseReader:
                 self.testcaseList.append(self._readTestcase(testcaseDict, package))
                 
     def _readTestcase(self, testcaseDict, package):
-        testcase = Testcase(self.apkpath.strip(), testcaseDict['description'].strip(), self.testcasePath.strip(), package.strip())
+        if (not testcaseDict.has_key('name')) and (not testcaseDict.has_key('description')):
+            raise Exception
+        
+        name = None
+        if testcaseDict.has_key('name'):
+            name = testcaseDict['name']
+        else:
+            name = testcaseDict['description']
+
+        testcase = Testcase(name, self.apkpath.strip(), testcaseDict['description'].strip() if testcaseDict.has_key('description') else None, self.testcasePath.strip(), package.strip())
+            
+        testcase.testcaseResult.testcaseName = testcase.name
             
         if type(testcaseDict['commands']['command']) is list:
             for command in testcaseDict['commands']['command']:

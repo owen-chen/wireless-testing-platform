@@ -106,8 +106,7 @@ class DeviceManager():
             self._deviceInfoList.processing_device_list = tempProcessingDeviceList
         finally:
             self._lock.release()
-            
-            
+                 
     def _refreshPeriodly(self):
         while True:
             self.refresh()

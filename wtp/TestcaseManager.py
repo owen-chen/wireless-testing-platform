@@ -14,6 +14,7 @@ from threadpool import makeRequests
 from CommonLib import callCommand
 from DeviceManager import DeviceManager
 from Singleton import singleton
+from TestcaseResultDao import TestcaseResultDao
 from ThreadPoolManager import ThreadPoolManager
 
 
@@ -49,21 +50,26 @@ class TestcaseManager:
         try:
             deviceInfo = args[0]['deviceInfo']
             testcase = args[0]['testcase']
+            testcaseResult = testcase.testcaseResult
+
+            TestcaseResultDao().insert(testcaseResult)
             
-            print callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package))
-            print callCommand("adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath))
+            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)))
+            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath)))
             
             for prepare in testcase.prepares:
                 prepare = self._replaceMacro(prepare, deviceInfo, testcase);
-                print prepare
-                print callCommand(prepare)
+                TestcaseResultDao().update(testcaseResult, callCommand(prepare))
                 
             for command in testcase.commands:
                 command = self._replaceMacro(command, deviceInfo, testcase);
-                print command
-                print callCommand(command)
+                TestcaseResultDao().update(testcaseResult, callCommand(command))
                 
-            print callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package))
+            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)))
+            
+            testcaseResult.isEnd = 1
+            testcaseResult.isSuccess = 1
+            TestcaseResultDao().update(testcaseResult)
         finally:
             DeviceManager().resetDevice(deviceInfo)
             
@@ -72,5 +78,3 @@ class TestcaseManager:
         original = original.replace("${WORKSPACE}", testcase.testcasepath[0:testcase.testcasepath.rindex('/')])
         
         return original
-        
-    

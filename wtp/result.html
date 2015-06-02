@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	    <link rel="shortcut icon" href="favicon.png">
+	    
+	    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+		<script>
+		    line = 0
+		    var thisInterval;
+			$(function(){
+			    getResult()
+			  	thisInterval = setInterval(function(){
+			  	    getResult()
+			  	}, 3000) 
+			})
+			
+			function getResult(){
+			    $.ajax({
+			  	    url: 'result',
+			  	    dataType: 'json',
+			  	    data: {
+			  			name: '{{name}}',
+			  			uuid: '{{uuid}}',
+			  			line: line
+			  	    },
+			  	    success: function(data){
+			  			line = data.line;
+			  			$("body").append(data.result);
+			  			if(data.isEnd){
+			  			  	clearInterval(thisInterval);
+			  			}
+			  	    }
+		  	    })
+			}
+		</script>
+	</head>
+	<body></body>
+</html>

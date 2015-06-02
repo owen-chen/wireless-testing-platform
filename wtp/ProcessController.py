@@ -13,7 +13,7 @@ from TestcaseManager import TestcaseManager
 from TestcaseReader import TestcaseReader
 
 
-class ProcessHandler(tornado.web.RequestHandler):
+class ProcessController(tornado.web.RequestHandler):
     ''' 执行测试用例 '''
     def get(self):
         ''' 1. 确定交付包位置 '''
@@ -45,3 +45,5 @@ class ProcessHandler(tornado.web.RequestHandler):
         ''' 4. 循环读取命令，在线程池中运行 '''
         for testcase in testcaseList:
             TestcaseManager().process(testcase)
+            
+        self.write('success')
