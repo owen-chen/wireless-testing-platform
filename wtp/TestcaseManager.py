@@ -6,6 +6,7 @@ Created on May 26, 2015
 '''
 
 import Queue
+import sys
 import thread
 import time
 
@@ -55,11 +56,11 @@ class TestcaseManager:
             TestcaseResultDao().insert(testcaseResult)
             
             uninstallCommand = "adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)
-            print uninstallCommand
+            sys.stderr.write(uninstallCommand)
             TestcaseResultDao().update(testcaseResult, callCommand(uninstallCommand))
             
             installCommand = "adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath)
-            print installCommand
+            sys.stderr.write(installCommand)
             TestcaseResultDao().update(testcaseResult, callCommand(installCommand))
             
             for prepare in testcase.prepares:
