@@ -18,6 +18,7 @@ class ProcessController(tornado.web.RequestHandler):
     def get(self):
         ''' 1. 确定交付包位置 '''
         apkpath = "%s/%s" % (Configuration().dicts['testcase']['packageServer'], self.get_argument('apkpath'))
+        print apkpath
         exist = os.path.isfile(apkpath)
         if not exist:
             raise Exception
