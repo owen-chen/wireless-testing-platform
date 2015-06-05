@@ -54,8 +54,13 @@ class TestcaseManager:
 
             TestcaseResultDao().insert(testcaseResult)
             
-            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)))
-            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath)))
+            uninstallCommand = "adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)
+            print uninstallCommand
+            TestcaseResultDao().update(testcaseResult, callCommand(uninstallCommand))
+            
+            installCommand = "adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath)
+            print installCommand
+            TestcaseResultDao().update(testcaseResult, callCommand(installCommand))
             
             for prepare in testcase.prepares:
                 prepare = self._replaceMacro(prepare, deviceInfo, testcase);

@@ -46,4 +46,4 @@ class ProcessController(tornado.web.RequestHandler):
         for testcase in testcaseList:
             TestcaseManager().process(testcase)
             
-        self.write('success')
+        self.write({'success': True})
