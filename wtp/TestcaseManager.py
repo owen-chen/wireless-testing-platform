@@ -12,7 +12,7 @@ import time
 
 from threadpool import makeRequests
 
-from CommonLib import callCommandBySubprocess
+from CommonLib import callCommand
 from DeviceManager import DeviceManager
 from Singleton import singleton
 from TestcaseResultDao import TestcaseResultDao
@@ -56,27 +56,24 @@ class TestcaseManager:
             TestcaseResultDao().insert(testcaseResult)
             
             uninstallCommand = "adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)
-            sys.stderr.write(uninstallCommand)
-            uninstallCommandLines = callCommandBySubprocess(uninstallCommand)
-            TestcaseResultDao().update(testcaseResult, uninstallCommandLines)
+            sys.stderr.writelines(uninstallCommand)
+            TestcaseResultDao().update(testcaseResult, callCommand(uninstallCommand))
             
             installCommand = "adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath)
-            sys.stderr.write(installCommand)
-            installComandLines = callCommandBySubprocess(installCommand)
-            TestcaseResultDao().update(testcaseResult, installComandLines)
+            sys.stderr.writelines(installCommand)
+            TestcaseResultDao().update(testcaseResult, callCommand(installCommand))
             
             for prepare in testcase.prepares:
                 prepare = self._replaceMacro(prepare, deviceInfo, testcase);
-                prepareLines = callCommandBySubprocess(prepare)
-                TestcaseResultDao().update(testcaseResult, prepareLines)
+                sys.stderr.writelines(prepare)
+                TestcaseResultDao().update(testcaseResult, callCommand(prepare))
                 
             for command in testcase.commands:
                 command = self._replaceMacro(command, deviceInfo, testcase);
-                commandLines = callCommandBySubprocess(command)
-                TestcaseResultDao().update(testcaseResult, commandLines)
+                sys.stderr.writelines(command)
+                TestcaseResultDao().update(testcaseResult, callCommand(command))
                 
-            postUninstallCommandLines = callCommandBySubprocess("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package))
-            TestcaseResultDao().update(testcaseResult, postUninstallCommandLines)
+            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)))
             
             testcaseResult.isEnd = 1
             testcaseResult.isSuccess = 1
