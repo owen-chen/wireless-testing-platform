@@ -14,10 +14,9 @@ from Testcase import Testcase
 
 
 class TestcaseReader:
-    def __init__(self, apkpath, projectname, buildId):
+    def __init__(self, apkpath, projectname):
         self.apkpath = apkpath
         self.projectname = projectname
-        self.buildId = buildId
         self.uuid = self.projectname + "-" + uuid.uuid4()
         
         self.testcaseList = []
