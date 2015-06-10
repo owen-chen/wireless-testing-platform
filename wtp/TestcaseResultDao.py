@@ -4,6 +4,8 @@ Created on Jun 2, 2015
 
 @author: chenchen
 '''
+import sys
+
 import MySQLdb
 
 from Singleton import singleton
@@ -25,7 +27,7 @@ class TestcaseResultDao:
         cursor = self.db.cursor()
         try:
             sql = "INSERT INTO testcase_result(testcase_name, uuid, parent_uuid, device_info) VALUES (%s, %s, %s, %s)"
-            print "parentUuid: ", testcaseResult.parentUuid
+            sys.stderr.write("parentUuid: %s" % (testcaseResult.parentUuid))
             cursor.execute(sql, (testcaseResult.testcaseName, testcaseResult.uuid, testcaseResult.parentUuid, testcaseResult.deviceInfo))
         except Exception, e:
             print e
