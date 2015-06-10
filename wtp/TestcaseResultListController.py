@@ -4,7 +4,8 @@ Created on Jun 2, 2015
 
 @author: chenchen
 '''
-import lazyxml
+import json
+
 import tornado.web
 
 from TestcaseResult import TestcaseResult
@@ -33,4 +34,4 @@ class TestcaseResultListController(tornado.web.RequestHandler):
                 
                 testcaseResultListDict['testcase_result_list'].append(testcaseResult.toDict())
 
-            self.write({"successful": True, 'testcaseResultArray': lazyxml.dumps(testcaseResultListDict, root='testcase_result_list', cdata=False, indent='    ')})        
+            self.write({"successful": True, 'testcaseResultArray': json.dumps(testcaseResultListDict,  indent=4)})        
