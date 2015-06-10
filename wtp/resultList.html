@@ -6,12 +6,11 @@
 	    
 	    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
 		<script>
-			var endedTestcaseResultArray = []
 			$(function(){
 			    getResult()
 			  	setInterval(function(){
 			  	    getResult()
-			  	}, 10000)
+			  	}, 20000)
 			})
 			
 			function getResult(){
@@ -27,27 +26,12 @@
 			  			}
 			  		
 			  			for(var i = 0; i < data.testcaseResultArray.length; i++){
-			  			  	var testcaseResult = data.testcaseResultArray[i];
-			  			  	if(endedTestcaseResultArray.contains(testcaseResult.testcaseName)){
-			  			  	    continue;
-			  			  	}
-			  			  	
-				  			$("body").append(testcaseResult);
-				  			endedTestcaseResultArray.push(testcaseResult.testcaseName)
+							$("body").clear()			  			  	
+				  			$("body").append(testcaseResultArray);
 			  			}
 			  	    }
 		  	    })
 			}
-			
-			Array.prototype.contains = function(item){
-			    for(var i = 0; i < this.length; i++){
-			    	if(this[i]==item){
-			            return true;
-			        }
-			    }
-			    
-			    return false;
-			};
 		</script>
 	</head>
 	<body></body>

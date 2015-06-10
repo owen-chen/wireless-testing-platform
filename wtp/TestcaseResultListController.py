@@ -4,6 +4,7 @@ Created on Jun 2, 2015
 
 @author: chenchen
 '''
+import lazyxml
 import tornado.web
 
 from TestcaseResult import TestcaseResult
@@ -22,7 +23,7 @@ class TestcaseResultListController(tornado.web.RequestHandler):
         if not resultsets:
             self.write({"successful": False})
         else:
-            testcaseResultArray  = []
+            testcaseResultListDict = {'testcase_result_list' : []}
             for resultset in resultsets:
                 testcaseResult = TestcaseResult()
                 testcaseResult.result = '<br />'.join(resultset[0].splitlines())
@@ -30,6 +31,6 @@ class TestcaseResultListController(tornado.web.RequestHandler):
                 testcaseResult.isSuccess = resultset[2]
                 testcaseResult.testcaseName = resultset[3]
                 
-                testcaseResultArray.append(testcaseResult)
+                testcaseResultListDict['testcase_result_list'].append(testcaseResult.toDict())
 
-            self.write({"successful": True, 'testcaseResultArray': testcaseResultArray})        
+            self.write({"successful": True, 'testcaseResultArray': lazyxml.dumps(testcaseResultListDict, root='testcase_result_list', cdata=False, indent='    ')})        

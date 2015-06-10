@@ -16,3 +16,14 @@ class TestcaseResult:
         self.result = ''
         self.isEnd = 0
         self.isSuccess = 0
+        
+    def toDict(self):
+        testcase_result_dict = {}
+        testcase_result_dict['deviceInfo'] = self.deviceInfo
+        testcase_result_dict['parentUuid'] = self.parentUuid
+        testcase_result_dict['uuid'] = self.uuid
+        testcase_result_dict['testcaseName'] = self.testcaseName
+        testcase_result_dict['result'] = self.result
+        testcase_result_dict['isEnd'] = self.isEnd
+        testcase_result_dict['isSuccess'] = self.isSuccess
+        return testcase_result_dict

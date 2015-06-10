@@ -27,7 +27,6 @@ class TestcaseResultDao:
         cursor = self.db.cursor()
         try:
             sql = "INSERT INTO testcase_result(testcase_name, uuid, parent_uuid, device_info) VALUES (%s, %s, %s, %s)"
-            sys.stderr.write("parentUuid: %s" % (testcaseResult.parentUuid))
             cursor.execute(sql, (testcaseResult.testcaseName, testcaseResult.uuid, testcaseResult.parentUuid, testcaseResult.deviceInfo))
         except Exception, e:
             sys.stderr.write(str(e))
