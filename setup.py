@@ -7,7 +7,7 @@ setup(
       name="wtp",
         version="1.1.0",
         packages=find_packages(),
-        package_data={'':['config.xml','index.html', 'jquery-1.10.2.min.js', 'favicon.png', 'result.html']},
+        package_data={'':['config.xml','index.html', 'jquery-1.10.2.min.js', 'favicon.png', 'result.html', 'resultList.html']},
         zip_safe=False,
 
         description="wireless testing platform",
