@@ -30,7 +30,7 @@ class TestcaseResultDao:
             sys.stderr.write("parentUuid: %s" % (testcaseResult.parentUuid))
             cursor.execute(sql, (testcaseResult.testcaseName, testcaseResult.uuid, testcaseResult.parentUuid, testcaseResult.deviceInfo))
         except Exception, e:
-            print e
+            sys.stderr.write(e)
             self.db.rollback()
         
     def update(self, testcaseResult, resultList=[]):
@@ -42,7 +42,7 @@ class TestcaseResultDao:
             sql = "UPDATE testcase_result SET result = %s, isEnd = %s, isSuccess = %s WHERE testcase_name = %s AND uuid = %s"
             cursor.execute(sql, (testcaseResult.result, testcaseResult.isEnd, testcaseResult.isSuccess, testcaseResult.testcaseName, testcaseResult.uuid))
         except Exception, e:
-            print e
+            sys.stderr.write(e)
             self.db.rollback()
             
     def retrieveAllInOneJob(self, parentUuid):
