@@ -30,7 +30,7 @@ class TornadoProcessor:
         DeviceManager()
         ThreadPoolManager()
 
-        define('port', 9000, None, int)
+        define('port', 80, None, int)
 
     def run(self):
         settings = {'static_path': os.path.join(os.path.dirname(__file__), '')}
