@@ -4,21 +4,47 @@ Created on May 27, 2015
 
 @author: chenchen
 '''
+import os
+import uuid
+
 import lazyxml
 
+from Configuration import Configuration
 from Testcase import Testcase
 
 
 class TestcaseReader:
-    def __init__(self, testcasePath, apkpath):
-        self.testcasePath = testcasePath
+    def __init__(self, apkpath, projectname, buildId):
         self.apkpath = apkpath
+        self.projectname = projectname
+        self.buildId = buildId
+        self.uuid = self.projectname + "-" + uuid.uuid4()
+        
         self.testcaseList = []
         
         self._load();
+        
+    ''' 确定测试用例文件路径 '''
+    def _getTestcasePath(self):
+        tempPath = self.projectname.replace("-", "/")
+
+        while True:
+            testcasePath = "%s/%s/testcase.xml" % (Configuration().dicts['testcase']['testcaseServer'], tempPath)
+            exist = os.path.isfile(testcasePath)
+            if exist:
+                return testcasePath
+            
+            if (tempPath.find('/') == -1 and tempPath.find('_') == -1) or not tempPath:
+                raise Exception
+            if tempPath.find('_') != -1:
+                tempPath = tempPath[:tempPath.rindex('_')]
+            else:
+                tempPath = tempPath[:tempPath.rindex('/')]
+
+        raise Exception
     
     def _load(self):
-        xml = open(self.testcasePath).read()
+        xml = open(self._getTestcasePath()).read()
         dicts = lazyxml.loads(xml, strip=False)
         
         if not dicts or not dicts['testcases'] or not dicts['testcases']['testcase']:
@@ -44,6 +70,7 @@ class TestcaseReader:
         testcase = Testcase(name, self.apkpath.strip(), testcaseDict['description'].strip() if testcaseDict.has_key('description') else None, self.testcasePath.strip(), package.strip())
             
         testcase.testcaseResult.testcaseName = testcase.name
+        testcase.testcaseResult.parentUuid = self.uuid
             
         if type(testcaseDict['commands']['command']) is list:
             for command in testcaseDict['commands']['command']:

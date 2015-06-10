@@ -9,6 +9,8 @@ import uuid
 
 class TestcaseResult:
     def __init__(self):
+        self.deviceInfo = None
+        self.parentUuid = None
         self.uuid = uuid.uuid4()
         self.testcaseName = None
         self.result = ''

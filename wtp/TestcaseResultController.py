@@ -24,10 +24,13 @@ class TestcaseResultController(tornado.web.RequestHandler):
         else:
             results = TestcaseResultDao().retrieveLastOne(name)
             
-        result = ''
-        if results[0]:
-            lines = results[0].splitlines()
-            if len(lines) > line:
-                result = '<br />'.join(lines[line + 1:])
-
-        self.write({"result": result, "isEnd": results[1], "isSuccess": results[2], "line": len(lines)})        
+        if not results:
+            self.write({"successful": False})
+        else:
+            result = ''
+            if results[0]:
+                lines = results[0].splitlines()
+                if len(lines) > line:
+                    result = '<br />'.join(lines[line + 1:])
+    
+            self.write({"successful": True, "result": result, "isEnd": results[1], "isSuccess": results[2], "line": len(lines)})        

@@ -22,28 +22,11 @@ class ProcessController(tornado.web.RequestHandler):
         if not exist:
             raise Exception
         
-        ''' 2. 读取测试用例配置 '''
-        projectname = self.get_argument('projectname')
-        tempPath = projectname.replace("-", "/")
-
-        while True:
-            testcasePath = "%s/%s/testcase.xml" % (Configuration().dicts['testcase']['testcaseServer'], tempPath)
-            exist = os.path.isfile(testcasePath)
-            if exist:
-                break
-            
-            if (tempPath.find('/') == -1 and tempPath.find('_') == -1) or not tempPath:
-                raise Exception
-            if tempPath.find('_') != -1:
-                tempPath = tempPath[:tempPath.rindex('_')]
-            else:
-                tempPath = tempPath[:tempPath.rindex('/')]
-            
         ''' 3. 解析xml，反序列化 '''
-        testcaseList = TestcaseReader(testcasePath, apkpath).testcaseList;
+        testcaseReader = TestcaseReader(apkpath, self.get_argument('projectname'));
             
         ''' 4. 循环读取命令，在线程池中运行 '''
-        for testcase in testcaseList:
+        for testcase in testcaseReader.testcaseList:
             TestcaseManager().process(testcase)
             
-        self.write({'success': True})
+        self.write({'success': True, 'uuid': testcaseReader.uuid})

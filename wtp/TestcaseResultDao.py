@@ -24,8 +24,8 @@ class TestcaseResultDao:
     def insert(self, testcaseResult):
         cursor = self.db.cursor()
         try:
-            sql = "INSERT INTO testcase_result(testcase_name, uuid) VALUES (%s, %s)"
-            cursor.execute(sql, (testcaseResult.testcaseName, testcaseResult.uuid))
+            sql = "INSERT INTO testcase_result(testcase_name, uuid, parent_uuid, device_info) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (testcaseResult.testcaseName, testcaseResult.uuid, testcaseResult.parentUuid, testcaseResult.deviceInfo))
         except Exception, e:
             print e
             self.db.rollback()
@@ -42,6 +42,12 @@ class TestcaseResultDao:
             print e
             self.db.rollback()
             
+    def retrieveAllInOneJob(self, parentUuid):
+        cursor = self.db.cursor()
+        sql = "SELECT result, device_info, isSuccess, testcase_name FROM testcase_result WHERE parent_uuid = %s AND isEnd = 1"
+        cursor.execute(sql, (parentUuid,))
+        return cursor.fetchall()
+        
     def retrieveLastOne(self, testcaseName):
         cursor = self.db.cursor()
         sql = "SELECT result, isEnd, isSuccess FROM testcase_result WHERE testcase_name = %s ORDER BY ID DESC LIMIT 1"

@@ -19,6 +19,8 @@ from DeviceManager import DeviceManager
 from ProcessController import ProcessController
 from TestcaseResultController import TestcaseResultController
 from TestcaseResultHtmlController import TestcaseResultHtmlController
+from TestcaseResultListController import TestcaseResultListController
+from TestcaseResultListHtmlController import TestcaseResultListHtmlController
 from ThreadPoolManager import ThreadPoolManager
 
 
@@ -40,7 +42,9 @@ class TornadoProcessor:
                                                         (r'/devices', DeviceInfoController),
                                                         (r'/process', ProcessController),
                                                         (r'/result', TestcaseResultController),
-                                                        (r'/resultHtml', TestcaseResultHtmlController)
+                                                        (r'/resultList', TestcaseResultListController),
+                                                        (r'/resultHtml', TestcaseResultHtmlController),
+                                                        (r'/resultListHtml', TestcaseResultListHtmlController)
                                                         ], **settings)
         http_server = tornado.httpserver.HTTPServer(application)
         http_server.listen(options.port)

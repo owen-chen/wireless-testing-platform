@@ -25,6 +25,10 @@
 			  			line: line
 			  	    },
 			  	    success: function(data){
+			  			if(!data.successful){
+			  			    return;
+			  			}
+			  		
 			  			line = data.line;
 			  			$("body").append(data.result);
 			  			if(data.isEnd){

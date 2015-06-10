@@ -6,7 +6,7 @@ Created on May 26, 2015
 '''
 
 import Queue
-import sys
+import json
 import thread
 import time
 
@@ -51,33 +51,29 @@ class TestcaseManager:
         try:
             deviceInfo = args[0]['deviceInfo']
             testcase = args[0]['testcase']
-            testcaseResult = testcase.testcaseResult
+            testcase.testcaseResult.deviceInfo = json.dumps(deviceInfo.toDict())
 
-            TestcaseResultDao().insert(testcaseResult)
+            TestcaseResultDao().insert(testcase.testcaseResult)
             
             uninstallCommand = "adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)
-            sys.stderr.writelines(uninstallCommand)
-            TestcaseResultDao().update(testcaseResult, callCommand(uninstallCommand))
+            TestcaseResultDao().update(testcase.testcaseResult, callCommand(uninstallCommand))
             
             installCommand = "adb -s %s install %s" % (deviceInfo.serial, testcase.apkpath)
-            sys.stderr.writelines(installCommand)
-            TestcaseResultDao().update(testcaseResult, callCommand(installCommand))
+            TestcaseResultDao().update(testcase.testcaseResult, callCommand(installCommand))
             
             for prepare in testcase.prepares:
                 prepare = self._replaceMacro(prepare, deviceInfo, testcase);
-                sys.stderr.writelines(prepare)
-                TestcaseResultDao().update(testcaseResult, callCommand(prepare))
+                TestcaseResultDao().update(testcase.testcaseResult, callCommand(prepare))
                 
             for command in testcase.commands:
                 command = self._replaceMacro(command, deviceInfo, testcase);
-                sys.stderr.writelines(command)
-                TestcaseResultDao().update(testcaseResult, callCommand(command))
+                TestcaseResultDao().update(testcase.testcaseResult, callCommand(command))
                 
-            TestcaseResultDao().update(testcaseResult, callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)))
+            TestcaseResultDao().update(testcase.testcaseResult, callCommand("adb -s %s uninstall %s" % (deviceInfo.serial, testcase.package)))
             
-            testcaseResult.isEnd = 1
-            testcaseResult.isSuccess = 1
-            TestcaseResultDao().update(testcaseResult)
+            testcase.testcaseResult.isEnd = 1
+            testcase.testcaseResult.isSuccess = 1
+            TestcaseResultDao().update(testcase.testcaseResult)
         finally:
             DeviceManager().resetDevice(deviceInfo)
             

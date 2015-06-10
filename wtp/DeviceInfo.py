@@ -23,3 +23,16 @@ class DeviceInfo():
             self.edition = DeviceUtils.getEditionBySerial(serial)
             self.memory_size, self.memory_free = DeviceUtils.getMemoryParameterBySerial(serial)
             self.sim_state = DeviceUtils.getSimStateBySerial(serial)
+            
+    def toDict(self):
+        device_info_dict = {}
+        device_info_dict['serial'] = self.serial
+        device_info_dict['product'] = self.product
+        device_info_dict['resolution'] = self.resolution
+        device_info_dict['edition'] = self.edition
+        device_info_dict['memory_size'] = self.memory_size
+        device_info_dict['memory_free'] = self.memory_free
+        device_info_dict['sim_state'] = self.sim_state
+        device_info_dict['first_install'] = self.first_install
+        device_info_dict['state'] = self.sim_state
+        return device_info_dict
