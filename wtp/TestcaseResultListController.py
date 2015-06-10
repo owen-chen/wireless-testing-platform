@@ -32,4 +32,4 @@ class TestcaseResultListController(tornado.web.RequestHandler):
                 
                 testcaseResultArray.append(testcaseResult)
 
-        self.write({"successful": True, 'testcaseResultArray': testcaseResultArray})        
+            self.write({"successful": True, 'testcaseResultArray': testcaseResultArray})        
