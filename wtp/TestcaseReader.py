@@ -17,7 +17,7 @@ class TestcaseReader:
     def __init__(self, apkpath, projectname):
         self.apkpath = apkpath
         self.projectname = projectname
-        self.uuid = self.projectname + "-" + uuid.uuid4()
+        self.uuid = '-'.join([self.projectname, str(uuid.uuid4())])
         
         self.testcaseList = []
         
@@ -66,7 +66,7 @@ class TestcaseReader:
         else:
             name = testcaseDict['description']
 
-        testcase = Testcase(name, self.apkpath.strip(), testcaseDict['description'].strip() if testcaseDict.has_key('description') else None, self.testcasePath.strip(), package.strip())
+        testcase = Testcase(name, self.apkpath.strip(), testcaseDict['description'].strip() if testcaseDict.has_key('description') else None, self._getTestcasePath().strip(), package.strip())
             
         testcase.testcaseResult.testcaseName = testcase.name
         testcase.testcaseResult.parentUuid = self.uuid
