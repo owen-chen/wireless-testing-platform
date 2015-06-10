@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	    <link rel="shortcut icon" href="favicon.png">
+	    
+	    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+		<script>
+			var endedTestcaseResultArray = []
+			$(function(){
+			    getResult()
+			  	setInterval(function(){
+			  	    getResult()
+			  	}, 10000)
+			})
+			
+			function getResult(){
+			    $.ajax({
+			  	    url: 'resultList',
+			  	    dataType: 'json',
+			  	    data: {
+			  			uuid: '{{uuid}}'
+			  	    },
+			  	    success: function(data){
+			  			if(!data.successful){
+			  			    return;
+			  			}
+			  		
+			  			for(var i = 0; i < data.testcaseResultArray.length; i++){
+			  			  	var testcaseResult = data.testcaseResultArray[i];
+			  			  	if(endedTestcaseResultArray.contains(testcaseResult.testcaseName)){
+			  			  	    continue;
+			  			  	}
+			  			  	
+				  			$("body").append(testcaseResult);
+				  			endedTestcaseResultArray.push(testcaseResult.testcaseName)
+			  			}
+			  	    }
+		  	    })
+			}
+			
+			Array.prototype.contains = function(item){
+			    for(var i = 0; i < this.length; i++){
+			    	if(this[i]==item){
+			            return true;
+			        }
+			    }
+			    
+			    return false;
+			};
+		</script>
+	</head>
+	<body></body>
+</html>
